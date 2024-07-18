@@ -1,1 +1,3 @@
-# Leetcode-Practice is a repo about practicing leetcode questions through python and possibly java 
+# Leetcode
+
+My solutions to leetcode questions in java and python.
