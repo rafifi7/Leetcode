@@ -33,3 +33,31 @@ class Solution {
         return sb.toString();
     }
 }
+
+// much cleaner solution where we trim then split then remove all blank words from array then reversing through list of words
+
+// OPTIMAL: could be optimized if you found the indicies of each word and had two pointers from start and end 
+    class Solution {
+        public String reverseWords(String s) {
+            s = s.trim();
+            String[] words = s.split(" ");
+            ArrayList<String> arr = new ArrayList<>();
+
+            for (String word: words) {
+                if (word != "") {
+                    arr.add(word);
+                }
+
+            }
+
+           
+            StringBuilder sb = new StringBuilder();
+            for (int i = arr.size() - 1; i >= 0; i--) {
+                sb.append(arr.get(i));
+                if (i != 0) {
+                    sb.append(" ");
+                }
+            }
+            return sb.toString();
+        }
+    }
