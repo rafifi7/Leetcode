@@ -67,10 +67,9 @@ class Solution {
         int postfix = 1;
         int[] out = new int [nums.length];
 
-        out[0] = 1;
-        for (int i = 1; i < nums.length; i++) { // prefix loop
-            prefix *= nums[i - 1];
+        for (int i = 0; i < nums.length; i++) { // prefix loop
             out[i] = prefix;    
+            prefix *= nums[i];
         }
 
         for (int i = nums.length - 1; i >= 0; i--) { //postfix loop
