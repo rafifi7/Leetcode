@@ -1,4 +1,4 @@
-// hashmap solution O(2n) time complexity which is cool but not very fast, takes a lot of memory can be much more optimal
+// hashmap solution O(2n) time complexity which is cool but not very fast, takes a lot of memory can be more optimal
 class Solution {
     public int maxOperations(int[] nums, int k) {
         int numOperations = 0; 
@@ -48,5 +48,54 @@ class Solution {
     }
 }
 
-//optimal soltuion using two pointer technique
+//optimized version of ^ runs O(n)
+class Solution {
+    public int maxOperations(int[] nums, int k) {
+        int numOperations = 0; 
+        // what if hashmap every number and their counts
+        Map<Integer, Integer> hm = new HashMap<>();
+        int target = 0;
+        for (int i = 0; i < nums.length; i++) { // add counts of nums into hashmap
+            hm.put(nums[i], hm.getOrDefault(nums[i], 0) + 1);
+            target = k - nums[i];
+            if (target == nums[i] && hm.get(target) > 1) { // if the same and count of at least 2
+                numOperations++;
+                hm.put(target, hm.get(target) - 2); // decrease count by 2
+            } else if (target != nums[i] && hm.containsKey(target) && hm.get(target) > 0) { 
+                // if target is in hashmap and count of atleast 1
+                numOperations++;
+                hm.put(target, hm.get(target) - 1);
+                hm.put(nums[i], hm.get(nums[i]) - 1);
+            }
+        }
 
+
+        return numOperations;
+    }
+}
+
+
+//optimal soltuion using two pointer technique
+class Solution {
+    public int maxOperations(int[] nums, int k) {
+        int numOperations = 0; 
+        int l = 0, r = nums.length - 1;
+        Arrays.sort(nums);
+        int sum = 0;
+        while (l < r) {
+            sum = nums[l] + nums[r];
+            if (sum == k) {
+                numOperations++;
+                l++;
+                r--;
+            } else if (sum < k) {
+                l++;
+            } else if (sum > k) {
+                r--;
+            }
+
+        }
+
+        return numOperations;
+    }
+}
