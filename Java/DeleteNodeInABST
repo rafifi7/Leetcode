@@ -1,0 +1,134 @@
+// iterative solution: takes O(log(n)) to find the node with the key, and 
+class Solution {
+    public TreeNode deleteNode(TreeNode root, int key) {
+        if (root == null) return null;
+        if (root.val == key) {
+            if (root.left == null && root.right == null)
+                return null;
+            else if (root.left == null) 
+                return root.right;
+            else if (root.right == null)
+                return root.left;
+            
+        }
+        //running dfs to find the key
+        TreeNode node = root;
+        TreeNode parentNode = null;
+
+        while (node.val != key) {
+            if (node.val > key) { // key is smaller so go to left subtree
+                if (node.left != null) {
+                    parentNode = node;
+                    node = node.left;
+                } else return root;
+            } else if (node.val < key) { // key is largest so go to right subtree
+                if (node.right != null) {
+                    parentNode = node;
+                    node = node.right;
+                } else return root;
+            } 
+        }
+
+        if (node.val == key) { // node is key
+            // found node to be deleted
+            if (node.left == null && node.right == null) { // leaf node
+                node = null;
+            } else {
+                // find replacement node using this func
+                while (node != null && (node.left != null || node.right != null)) {
+                    List<TreeNode> nodes = findReplacementNode(node, parentNode);
+                    TreeNode replacement = nodes.get(0);
+                    parentNode = nodes.get(1);
+
+                    int temp = node.val;
+                    node.val = replacement.val;
+                    replacement.val = temp;
+                    // after swapping 
+
+                    // move pointer to replacement node now
+                    node = replacement;
+                }
+            }
+            // at this point node is guaranteed to be a leaf node and now we can set it to null
+            if (parentNode != null) {
+                if (parentNode.left != null && parentNode.left.val == key) 
+                    parentNode.left = null;
+                else if (parentNode.right != null && parentNode.right.val == key) 
+                    parentNode.right = null;
+            }
+            node = null;
+        }
+        return root;
+    }
+
+    // find smallest node in right subtree or find largest node in left subtree
+    public List<TreeNode> findReplacementNode(TreeNode node, TreeNode parent) {
+        List<TreeNode> ret = new ArrayList<>();
+        TreeNode curr = node;
+        TreeNode parentNode = parent;
+        if (curr.right != null) { //finding smallest node in right
+            parentNode = curr;
+            curr = curr.right;
+            while (curr.left != null) {
+                parentNode = curr;
+                curr = curr.left;
+            }
+        } else if (curr.left != null) { // finding largest node in left
+            parentNode = curr;
+            curr = curr.left;
+
+            while (curr.right != null) {
+                parentNode = curr;
+                curr = curr.right;
+            }
+        }
+        ret.add(curr);
+        ret.add(parentNode);
+        return ret; 
+    }
+     
+}
+
+
+// Recursive
+
+class Solution {
+    public TreeNode deleteNode(TreeNode root, int key) {
+        if (root == null) return null;
+        
+        if (key > root.val) {
+            // Traverse the right subtree
+            root.right = deleteNode(root.right, key);
+        } else if (key < root.val) {
+            // Traverse the left subtree
+            root.left = deleteNode(root.left, key);
+        } else {
+            // Node to delete found
+            if (root.left == null) {
+                // Case 1: No left child
+                return root.right;
+            } else if (root.right == null) {
+                // Case 2: No right child
+                return root.left;
+            } else {
+                // Case 3: Two children
+                // Find the minimum node in the right subtree
+                TreeNode minNode = findMinimumNode(root.right);
+                // Replace the current node's value with the minimum node's value
+                root.val = minNode.val;
+                // Delete the minimum node in the right subtree
+                root.right = deleteNode(root.right, minNode.val);
+            }
+        }
+        
+        return root;
+    }
+
+    private TreeNode findMinimumNode(TreeNode node) {
+        TreeNode curr = node;
+        while (curr != null && curr.left != null) {
+            curr = curr.left;
+        }
+        return curr;
+    }
+}
