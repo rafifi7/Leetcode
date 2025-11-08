@@ -3,8 +3,11 @@
 #     def __init__(self, val=0, next=None):
 #         self.val = val
 #         self.next = next
+from typing import Optional
+
+
 class Solution:
-    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]: # type: ignore
         if not list1 and not list2:
             return list1
         if not list1 and list2:
