@@ -1,5 +1,5 @@
 class Solution:
-    def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+    def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]: # type: ignore
         # base cases
         if not head or k == 1:
             return head
