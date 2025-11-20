@@ -6,6 +6,7 @@
 #         self.right = right
 from typing import Optional
 
+# Iterative dfs
 
 class Solution:
     def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool: # type: ignore
@@ -46,3 +47,34 @@ class Solution:
         if pStack or qStack:
             return False
         return True
+    
+
+#Recusrive dfs
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool: # type: ignore
+        # i will create two stacks one for p and one for q
+        if not p and not q:
+            return True
+        if not p and q or not q and p:
+            return False
+            
+        def dfs(p, q):
+            if not p and not q:
+                return True
+            if not p and q or not q and p:
+                return False
+            if p.val != q.val:
+                return False
+            
+            return dfs(p.left, q.left) and dfs(p.right, q.right) 
+            
+
+        return dfs(p, q)
+
